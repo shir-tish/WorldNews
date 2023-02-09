@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="5dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="130dp"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="5dp">
+
+<!--
+            <ImageView
+                android:id="@+id/article_image2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentStart="true"
+                android:contentDescription="@string/article_image"
+                android:src="@drawable/ic_not_found"
+                app:tint="@color/gray"
+                android:background="@color/white"/>
+-->
+
+            <ImageView
+                android:id="@+id/article_favorite"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_mark_border"
+                app:tint="@color/gray" />
+
+            <TextView
+                android:id="@+id/article_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/transparent"
+                android:text="Category"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/article_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/article_category"
+                android:layout_above="@id/article_publish_date"
+                android:background="@android:color/transparent"
+                android:text="Article Title"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/article_publish_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/transparent"
+                android:text="Publish Date"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/article_image_card"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="20dp"
+        android:layout_alignParentStart="true"
+        app:cardElevation="5dp"
+        android:layout_margin="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/article_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/article_image"
+                android:src="@drawable/ic_not_found"
+                app:tint="@color/gray"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
