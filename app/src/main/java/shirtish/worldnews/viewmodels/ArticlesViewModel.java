@@ -16,7 +16,7 @@ import shirtish.worldnews.models.Article;
 import shirtish.worldnews.retrofit.MediaStackApi;
 import shirtish.worldnews.retrofit.MediaStackApiUtil;
 
-public class ArticleViewModel extends ViewModel {
+public class ArticlesViewModel extends ViewModel {
     private MutableLiveData<List<Article>> articlesList;
 
     public LiveData<List<Article>> getArticlesList() {

@@ -21,13 +21,13 @@ import shirtish.worldnews.Constants;
 import shirtish.worldnews.R;
 import shirtish.worldnews.adapters.ArticleAdapter;
 import shirtish.worldnews.models.Article;
-import shirtish.worldnews.viewmodels.ArticleViewModel;
+import shirtish.worldnews.viewmodels.ArticlesViewModel;
 
 public class MainFragment extends Fragment {
 
     private ArticleAdapter articleAdapter;
 
-    public static ArticleViewModel articleViewModel;
+    public ArticlesViewModel articlesViewModel;
 
     /*visuals*/
     private SearchView searchView;
@@ -36,7 +36,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        articleViewModel = new ViewModelProvider(this).get(ArticleViewModel.class);
+        articlesViewModel = new ViewModelProvider(this).get(ArticlesViewModel.class);
     }
 
     @Nullable
@@ -71,7 +71,7 @@ public class MainFragment extends Fragment {
     }
 
     private void observeChangesOfArticleList() {
-        articleViewModel.getArticlesList().observe(getViewLifecycleOwner(), new Observer<List<Article>>() {
+        articlesViewModel.getArticlesList().observe(getViewLifecycleOwner(), new Observer<List<Article>>() {
             @Override
             public void onChanged(List<Article> articleList) {
                 articleAdapter = new ArticleAdapter(getContext(), articleList);
