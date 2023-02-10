@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.MainFragment"
-    android:orientation="vertical">
+    tools:context=".fragments.MainFragment">
 
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
         android:layout_margin="14dp">
 
         <TextView
@@ -24,6 +24,7 @@
             android:textSize="28sp"/>
 
         <TextView
+            android:id="@+id/favorites"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -39,17 +40,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
+        android:layout_below="@id/header"
         android:background="@drawable/basic_white_background"
-        android:elevation="3dp"
+        android:elevation="5dp"
         app:iconifiedByDefault="false"
         app:queryHint="Search here for articles"
         app:queryBackground="@android:color/transparent"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/articles_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/search_view"
+        android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
         tools:listitem="@layout/article_card"/>
 
+    <TextView
+        android:id="@+id/no_liked_article_text_view"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_view"
+        android:text="@string/you_have_not_marked_any_article_as_liked_yet"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:background="@android:color/transparent"
+        android:layout_margin="40dp"/>
 
-</LinearLayout>
+
+</RelativeLayout>

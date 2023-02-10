@@ -3,4 +3,6 @@
     <string name="article_image">Article\'s image</string>
     <string name="favorites">Favorites</string>
     <string name="login">Login</string>
+    <string name="mark_as_favorite">mark as favorite</string>
+    <string name="you_have_not_marked_any_article_as_liked_yet">You have not marked any article as liked yet!</string>
 </resources>

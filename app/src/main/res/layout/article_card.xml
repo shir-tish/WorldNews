@@ -1,38 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="210dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/article_card"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="20dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="5dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardElevation="5dp">
+        app:cardElevation="5dp"
+        app:cardCornerRadius="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:layout_marginStart="130dp"
-            android:layout_marginVertical="5dp"
-            android:layout_marginEnd="5dp">
-
-<!--
-            <ImageView
-                android:id="@+id/article_image2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="10dp"
-                android:layout_alignParentStart="true"
-                android:contentDescription="@string/article_image"
-                android:src="@drawable/ic_not_found"
-                app:tint="@color/gray"
-                android:background="@color/white"/>
--->
+            android:layout_marginStart="140dp"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/article_favorite"
@@ -42,9 +28,34 @@
                 android:layout_marginEnd="10dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_mark_border"
-                app:tint="@color/gray" />
+                app:tint="@color/dark"
+                android:contentDescription="@string/mark_as_favorite"
+                android:translationZ="3dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/category_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="start"
+                app:cardCornerRadius="5dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/genres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/category_background"
+                    android:text="Category"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:paddingVertical="5dp"
+                    android:paddingHorizontal="10dp"/>
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/article_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,12 +69,12 @@
                 android:id="@+id/article_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/article_category"
+                android:layout_below="@id/category_card_view"
                 android:layout_above="@id/article_publish_date"
-                android:background="@android:color/transparent"
+                android:gravity="start"
                 android:text="Article Title"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -73,7 +84,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:background="@android:color/transparent"
                 android:text="Publish Date"
                 android:textColor="@color/black" />
 
@@ -83,26 +93,38 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/article_image_card"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        app:cardCornerRadius="20dp"
-        android:layout_alignParentStart="true"
-        app:cardElevation="5dp"
-        android:layout_margin="5dp">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp"
+        android:translationZ="3dp"
+        android:layout_marginStart="10dp"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/article_image"
-                android:layout_width="match_parent"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/article_image"
+                android:src="@drawable/ic_not_found"
+                android:scaleType="centerCrop"
+                app:tint="@color/gray"/>
+
+
+            <ImageView
+                android:id="@+id/article_no_image"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/article_image"
                 android:src="@drawable/ic_not_found"
                 app:tint="@color/gray"/>
-
         </RelativeLayout>
+
 
     </androidx.cardview.widget.CardView>
 

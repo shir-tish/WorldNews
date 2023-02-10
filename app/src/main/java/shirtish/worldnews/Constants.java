@@ -5,4 +5,7 @@ public class Constants {
     public static String MEDIA_STACK_API_BASE_URL = "https://api.mediastack.com/v1/";
     public static String MEDIA_STACK_API_MEMBER_NAME = "news";
 
+    public String[] CATEGORIES = {"general", "business", "entertainment", "health", "science", "sports", "technology"};
+
+    public static String BUNDLE_KEY_POSITION = "position";
 }

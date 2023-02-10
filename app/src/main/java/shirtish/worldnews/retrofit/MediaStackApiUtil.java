@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import shirtish.worldnews.Constants;
 
 public class MediaStackApiUtil {
-    public static MediaStackApi getMediaStackRetrofitApi(){
+    public static MediaStackApi getMediaStackRetrofitApi() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(ArrayList.class, new MediaStackJsonDeserializer())
                 .create();
