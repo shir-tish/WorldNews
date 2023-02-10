@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -81,7 +82,7 @@ public class MainFragment extends Fragment {
                     public void onItemClicked(int position) {
                         Bundle bundle = new Bundle();
                         bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
-                        //TODO: navigate to article fragment by it's position
+                        Navigation.findNavController(articlesRecyclerView).navigate(R.id.action_mainFragment_to_articleFragment, bundle);
                     }
 
                     @Override

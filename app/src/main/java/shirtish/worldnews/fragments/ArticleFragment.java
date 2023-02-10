@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 
@@ -57,12 +58,20 @@ public class ArticleFragment extends Fragment {
 
     private void setFragmentElements(View view, Article article) {
         TextView articleTitle = view.findViewById(R.id.article_title);
-        TextView articleDescription = view.findViewById(R.id.article_description);
-        ImageView articleImage = view.findViewById(R.id.article_image);
-
         articleTitle.setText(article.getTitle());
+
+        TextView articleDescription = view.findViewById(R.id.article_description);
         articleDescription.setText(article.getDescription());
 
+        ImageView articleImage = view.findViewById(R.id.article_image);
         Glide.with(getContext()).load(article.getImage()).into(articleImage);
+
+        ImageView backTextView = view.findViewById(R.id.back_imageview);
+        backTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).popBackStack();
+            }
+        });
     }
 }
