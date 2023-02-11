@@ -34,7 +34,28 @@ public class ArticlesViewModel extends ViewModel {
     private void loadArticles() {
         MediaStackApi mediaStackApi = MediaStackApiUtil.getMediaStackRetrofitApi();
 
-        Call<ArrayList<Article>> call = mediaStackApi.getArticle(Constants.MEDIA_STACK_API_KEY);
+        Call<ArrayList<Article>> call = mediaStackApi.getAllArticles(Constants.MEDIA_STACK_API_KEY);
+        call.enqueue(new Callback<ArrayList<Article>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Article>> call, @NonNull Response<ArrayList<Article>> response) {
+                if (response.body() != null){
+                    articlesList.setValue(response.body());
+                    Log.d(TAG, response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Article>> call, @NonNull Throwable t) {
+            }
+        });
+    }
+
+    public void loadArticlesWithCategories(CategoriesViewModel categoriesViewModel) {
+        String categoriesAsStringList = categoriesViewModel.getActiveCategoriesAsStringList();
+
+        MediaStackApi mediaStackApi = MediaStackApiUtil.getMediaStackRetrofitApi();
+
+        Call<ArrayList<Article>> call = mediaStackApi.getArticleByCategory(Constants.MEDIA_STACK_API_KEY, categoriesAsStringList);
         call.enqueue(new Callback<ArrayList<Article>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<Article>> call, @NonNull Response<ArrayList<Article>> response) {

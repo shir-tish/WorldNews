@@ -9,7 +9,13 @@ import shirtish.worldnews.models.Article;
 
 public interface MediaStackApi {
     @GET("news")
-    Call<ArrayList<Article>> getArticle(
+    Call<ArrayList<Article>> getAllArticles(
             @Query("access_key") String access_key
+    );
+
+    @GET("news")
+    Call<ArrayList<Article>> getArticleByCategory(
+            @Query("access_key") String access_key,
+            @Query("categories") String categories
     );
 }

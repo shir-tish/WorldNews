@@ -18,13 +18,12 @@ import shirtish.worldnews.R;
 import shirtish.worldnews.models.Article;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
-
     private final Context context;
     private ArticleAdapterListener articleAdapterListener;
     private final List<Article> articleList;
 
     public interface ArticleAdapterListener {
-        void onItemClicked(int position);
+        void onArticleClicked(int position);
 
         void onFavoriteBtnClicked(int position);
     }
@@ -58,7 +57,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             Glide.with(context).load(article.getImage()).into(holder.image);
         }
 
-        holder.itemView.setOnClickListener(view -> articleAdapterListener.onItemClicked(position));
+        holder.itemView.setOnClickListener(view -> articleAdapterListener.onArticleClicked(position));
 
         holder.favoriteBtn.setOnClickListener(view -> articleAdapterListener.onFavoriteBtnClicked(position));
     }
@@ -69,7 +68,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     }
 
     public static class ArticleViewHolder extends RecyclerView.ViewHolder {
-
         ImageView image;
         TextView title;
         TextView category;

@@ -48,12 +48,12 @@ public class ArticleFragment extends Fragment {
 
     private void provideArticleViewModelAndObserveIt(View view) {
         ArticlesViewModel articlesViewModel = new ViewModelProvider(this).get(ArticlesViewModel.class);
-        articlesViewModel.getArticlesList().observe(getViewLifecycleOwner(), new Observer<List<Article>>() {
+        /*articlesViewModel.getArticlesList().observe(getViewLifecycleOwner(), new Observer<List<Article>>() {
             @Override
             public void onChanged(List<Article> articleList) {
                 setFragmentElements(view, articleList.get(articlePosition));
             }
-        });
+        });*/
     }
 
     private void setFragmentElements(View view, Article article) {

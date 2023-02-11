@@ -17,18 +17,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Objects;
 
 import shirtish.worldnews.Constants;
 import shirtish.worldnews.R;
 import shirtish.worldnews.adapters.ArticleAdapter;
+import shirtish.worldnews.adapters.CategoryAdapter;
 import shirtish.worldnews.models.Article;
+import shirtish.worldnews.models.Category;
 import shirtish.worldnews.viewmodels.ArticlesViewModel;
+import shirtish.worldnews.viewmodels.CategoriesViewModel;
 
 public class MainFragment extends Fragment {
 
     private ArticleAdapter articleAdapter;
 
     public ArticlesViewModel articlesViewModel;
+    public CategoriesViewModel categoriesViewModel;
 
     /*visuals*/
     private SearchView searchView;
@@ -38,6 +43,7 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         articlesViewModel = new ViewModelProvider(this).get(ArticlesViewModel.class);
+        categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
     }
 
     @Nullable
@@ -54,6 +60,7 @@ public class MainFragment extends Fragment {
 
         //TODO: search view
 
+        setCategoriesRecyclerView(view);
         setArticlesRecyclerView(view);
         observeChangesOfArticleList();
 
@@ -61,14 +68,36 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void setFavoriteTextViewAndSetItsOnClickListener(View view) {
-        TextView favoritesTextView = view.findViewById(R.id.favorites);
-        favoritesTextView.setOnClickListener(new View.OnClickListener() {
+    private void setCategoriesRecyclerView(View view) {
+        RecyclerView categoriesRecycleView = view.findViewById(R.id.categories_recycle_view);
+        categoriesRecycleView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        categoriesRecycleView.setLayoutManager(linearLayoutManager);
+
+        categoriesViewModel.getCategories().observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
             @Override
-            public void onClick(View view) {
-                //TODO: if login then show all favorites article. else offer to login
+            public void onChanged(List<Category> categories) {
+                CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(), categories);
+                categoriesRecycleView.setAdapter(categoryAdapter);
+                categoryAdapter.setCategoryAdapterListener(new CategoryAdapter.CategoryAdapterListener() {
+                    @Override
+                    public void onCategoryClicked(int position) {
+                        Category category = Objects.requireNonNull(categoriesViewModel.getCategories().getValue()).get(position);
+                        category.setActive(!category.isActive());
+
+                        articlesViewModel.loadArticlesWithCategories(categoriesViewModel);
+                    }
+                });
             }
         });
+
+    }
+
+    private void setArticlesRecyclerView(View view) {
+        articlesRecyclerView = view.findViewById(R.id.articles_recycle_view);
+        articlesRecyclerView.setHasFixedSize(true);
+        articlesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void observeChangesOfArticleList() {
@@ -79,7 +108,7 @@ public class MainFragment extends Fragment {
                 articlesRecyclerView.setAdapter(articleAdapter);
                 articleAdapter.setArticleAdapterListener(new ArticleAdapter.ArticleAdapterListener() {
                     @Override
-                    public void onItemClicked(int position) {
+                    public void onArticleClicked(int position) {
                         Bundle bundle = new Bundle();
                         bundle.putInt(Constants.BUNDLE_KEY_POSITION, position);
                         Navigation.findNavController(articlesRecyclerView).navigate(R.id.action_mainFragment_to_articleFragment, bundle);
@@ -94,9 +123,13 @@ public class MainFragment extends Fragment {
         });
     }
 
-    private void setArticlesRecyclerView(View view) {
-        articlesRecyclerView = view.findViewById(R.id.articles_recycle_view);
-        articlesRecyclerView.setHasFixedSize(true);
-        articlesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    private void setFavoriteTextViewAndSetItsOnClickListener(View view) {
+        TextView favoritesTextView = view.findViewById(R.id.favorites);
+        favoritesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: if login then show all favorites article. else offer to login
+            }
+        });
     }
 }
