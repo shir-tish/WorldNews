@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,8 +33,10 @@ public class MainFragment extends Fragment {
 
     private ArticleAdapter articleAdapter;
 
-    public ArticlesViewModel articlesViewModel;
-    public CategoriesViewModel categoriesViewModel;
+    private ArticlesViewModel articlesViewModel;
+    private CategoriesViewModel categoriesViewModel;
+
+    public static ArrayList<String> favoriteArticlesIds;
 
     /*visuals*/
     private SearchView searchView;
@@ -44,6 +47,7 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         articlesViewModel = new ViewModelProvider(this).get(ArticlesViewModel.class);
         categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
+        setFavoritesArticles();
     }
 
     @Nullable
@@ -52,6 +56,14 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
         init(view);
         return view;
+    }
+
+    private void setFavoritesArticles(){
+        if (favoriteArticlesIds == null) {
+            favoriteArticlesIds = new ArrayList<>();
+        }
+
+        //TODO: check if login and if so load favoriteArticles list
     }
 
     private void init(View view) {
@@ -116,7 +128,9 @@ public class MainFragment extends Fragment {
 
                     @Override
                     public void onFavoriteBtnClicked(int position) {
-                        //TODO: add/remove position to/from favorites if login else offer to login
+                        Article article = Objects.requireNonNull(articlesViewModel.getArticlesList().getValue()).get(position);
+
+                        //TODO: if article is already in favorites then remove and if not then add to list
                     }
                 });
             }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -47,7 +48,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(@NonNull ArticleAdapter.ArticleViewHolder holder, int position) {
-        Article article = articleList.get(position);
+        Article article = articleList.get(holder.getAdapterPosition());
 
         holder.title.setText(article.getTitle());
         holder.category.setText(article.getCategory());
@@ -55,11 +56,32 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
         if(article.getImage() != null) {
             Glide.with(context).load(article.getImage()).into(holder.image);
+            holder.noImageTextView.setVisibility(View.GONE);
+        } else {
+            holder.noImageTextView.setVisibility(View.VISIBLE);
         }
 
-        holder.itemView.setOnClickListener(view -> articleAdapterListener.onArticleClicked(position));
+        checkIfFavoriteAndRemoveOrAddToList(holder.favoriteImageView);
 
-        holder.favoriteBtn.setOnClickListener(view -> articleAdapterListener.onFavoriteBtnClicked(position));
+        holder.itemView.setOnClickListener(view -> articleAdapterListener.onArticleClicked(holder.getAdapterPosition()));
+
+        holder.favoriteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                articleAdapterListener.onFavoriteBtnClicked(holder.getAdapterPosition());
+
+                checkIfFavoriteAndRemoveOrAddToList(holder.favoriteImageView);
+            }
+        });
+    }
+
+    private void checkIfFavoriteAndRemoveOrAddToList(ImageView favoriteImageView){
+        //TODO: if article is in favorite list then
+        /*if () {
+            favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark));
+        } else {
+            favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark_border));
+        }*/
     }
 
     @Override
@@ -72,7 +94,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         TextView title;
         TextView category;
         TextView publishDate;
-        ImageView favoriteBtn;
+        TextView noImageTextView;
+        ImageView favoriteImageView;
 
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,7 +103,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             title = itemView.findViewById(R.id.article_title);
             category = itemView.findViewById(R.id.article_category);
             publishDate = itemView.findViewById(R.id.article_publish_date);
-            favoriteBtn = itemView.findViewById(R.id.article_favorite);
+            noImageTextView = itemView.findViewById(R.id.no_image_text_view);
+            favoriteImageView = itemView.findViewById(R.id.article_favorite);
         }
     }
 }

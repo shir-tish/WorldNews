@@ -2,6 +2,10 @@ package shirtish.worldnews.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Article {
     private String author;
     private String title;
@@ -65,6 +69,6 @@ public class Article {
 
         String[] dateArray = date.split("-");
 
-        return dateArray[2]+"/"+dateArray[1]+"/"+dateArray[2]+ " " + dateTime[1].substring(0, 4);
+        return dateArray[2]+"/"+dateArray[1]+"/"+dateArray[2]+ " " + dateTime[1].substring(0, 5);
     }
 }
