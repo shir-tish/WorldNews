@@ -40,7 +40,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @NonNull
     @Override
-    public ArticleAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.article_card, parent, false);
         return new ArticleViewHolder(view);
@@ -51,8 +51,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         Article article = articleList.get(position);
 
         holder.title.setText(article.getTitle());
-        holder.title.setText(article.getPublishedDate());
-        Glide.with(context).load(article.getImage()).into(holder.image);
+        holder.category.setText(article.getCategory());
+        holder.publishDate.setText(article.getPublishedDate());
+
+        if(article.getImage() != null) {
+            Glide.with(context).load(article.getImage()).into(holder.image);
+        }
 
         holder.itemView.setOnClickListener(view -> articleAdapterListener.onItemClicked(position));
 
@@ -68,6 +72,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
         ImageView image;
         TextView title;
+        TextView category;
         TextView publishDate;
         ImageView favoriteBtn;
 
@@ -75,6 +80,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             super(itemView);
             image = itemView.findViewById(R.id.article_image);
             title = itemView.findViewById(R.id.article_title);
+            category = itemView.findViewById(R.id.article_category);
             publishDate = itemView.findViewById(R.id.article_publish_date);
             favoriteBtn = itemView.findViewById(R.id.article_favorite);
         }

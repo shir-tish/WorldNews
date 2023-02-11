@@ -27,8 +27,8 @@ public class MediaStackJsonDeserializer implements JsonDeserializer {
             JsonArray jsonArray = jsonObject.getAsJsonArray(Constants.MEDIA_STACK_API_MEMBER_NAME);
             articleArrayList = new ArrayList<>(jsonArray.size());
 
-            for (int i = 0; i < jsonArray.size(); i++) {
-                articleArrayList.add(context.deserialize(jsonArray.get(i), Article.class));
+            for (JsonElement i : jsonArray) {
+                articleArrayList.add(context.deserialize(i, Article.class));
             }
         } catch (JsonParseException e) {
             //TODO: check which error and show it to user

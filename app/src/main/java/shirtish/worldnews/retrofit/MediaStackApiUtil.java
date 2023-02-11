@@ -5,9 +5,11 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import shirtish.worldnews.Constants;
+import shirtish.worldnews.models.Article;
 
 public class MediaStackApiUtil {
     public static MediaStackApi getMediaStackRetrofitApi() {
