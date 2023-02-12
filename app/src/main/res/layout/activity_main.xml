@@ -54,16 +54,15 @@
         android:layout_margin="10dp"
         tools:listitem="@layout/category_card"/>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navigation_main_container"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/articles_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/categories_recycle_view"
         android:layout_alignParentBottom="true"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation" />
-
+        android:layout_marginHorizontal="10dp"
+        android:background="@color/light"
+        tools:listitem="@layout/article_card"/>
 
     <TextView
         android:id="@+id/no_liked_article_text_view"

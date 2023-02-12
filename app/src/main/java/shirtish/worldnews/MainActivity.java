@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,8 +19,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.HashMap;
 import java.util.Objects;
 
+import shirtish.worldnews.adapters.ArticleAdapter;
 import shirtish.worldnews.adapters.CategoryAdapter;
 import shirtish.worldnews.firebase.FirebaseAuthenticate;
 import shirtish.worldnews.firebase.FirebaseFavorites;
@@ -31,17 +32,26 @@ import shirtish.worldnews.viewmodels.CategoriesViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
+    /*Firebase*/
     private FirebaseAuthenticate firebaseAuthenticate;
-    public static FirebaseFavorites firebaseFavorites;
+    private FirebaseFavorites firebaseFavorites;
 
-    public static ArticlesViewModel articlesViewModel;
+    /*View Model*/
+    private ArticlesViewModel articlesViewModel;
     private CategoriesViewModel categoriesViewModel;
 
+    /*UI elements*/
     private TextView loginLogoutTextView;
     private TextView noLikedArticleTextView;
     private RecyclerView categoriesRecycleView;
+    private RecyclerView articlesRecyclerView;
 
+    /*Utils*/
+    private ArticleAdapter articleAdapter;
+
+    /*Data*/
     private boolean isFavoritesViewMode = false;
+    public static HashMap<String, String> favoritesArticlesKeysUrlsMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +67,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == Constants.REQUEST_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
-            String TAG = "MainActivity";
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.e(TAG, "account: " + account.getIdToken());
-
                 firebaseAuthWithGoogle(account.getIdToken());
-
             } catch (ApiException e) {
-                Log.e(TAG, e.getStatus().toString());
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -86,16 +90,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        firebaseAuthenticate = new FirebaseAuthenticate(this, this);
-        firebaseFavorites = new FirebaseFavorites();
+        noLikedArticleTextView = findViewById(R.id.no_liked_article_text_view);
 
         articlesViewModel = new ViewModelProvider(this).get(ArticlesViewModel.class);
         categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
 
-        noLikedArticleTextView = findViewById(R.id.no_liked_article_text_view);
+        firebaseAuthenticate = new FirebaseAuthenticate(this, this);
+        firebaseFavorites = new FirebaseFavorites(articlesViewModel);
 
+        setFavoriteHashMap();
         setLoginTextView();
         setFavoriteTextView();
+        setArticlesRecyclerView();
+        observeChangesOfArticleList();
 
         if (firebaseAuthenticate.isLoggedIn()) {
             loginLogoutTextView.setText(R.string.logout);
@@ -104,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setCategoriesRecyclerView();
+    }
+
+    private void setFavoriteHashMap(){
+        favoritesArticlesKeysUrlsMap = new HashMap<>();
+        firebaseFavorites.addFavoriteToMap();
     }
 
     private void setLoginTextView() {
@@ -123,21 +135,43 @@ public class MainActivity extends AppCompatActivity {
 
         favoriteTextView.setOnClickListener(view -> {
             if (firebaseAuthenticate.isLoggedIn()) {
-                if (isFavoritesViewMode){
+                if (isFavoritesViewMode) {
                     favoriteTextView.setText(R.string.favorites);
                     isFavoritesViewMode = false;
                     noLikedArticleTextView.setVisibility(View.GONE);
                     categoriesRecycleView.setVisibility(View.VISIBLE);
                     articlesViewModel.loadArticles();
-                }else{
+                } else {
                     favoriteTextView.setText(R.string.back_to_list);
                     isFavoritesViewMode = true;
                     categoriesRecycleView.setVisibility(View.GONE);
                     showAllFavorites();
                 }
             } else {
-                showUserThatNeedsToLogin();
+                Toast.makeText(this, R.string.login_required, Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    private void showAllFavorites() {
+        firebaseFavorites.getAllFavoriteArticles();
+        if (articlesViewModel.getArticleListSize() > 0) {
+            noLikedArticleTextView.setVisibility(View.GONE);
+        } else {
+            noLikedArticleTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setArticlesRecyclerView() {
+        articlesRecyclerView = findViewById(R.id.articles_recycle_view);
+        articlesRecyclerView.setHasFixedSize(true);
+        articlesRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+    }
+
+    private void observeChangesOfArticleList() {
+        articlesViewModel.getArticlesList().observe(this, articleList -> {
+            articleAdapter = new ArticleAdapter(MainActivity.this, articleList, firebaseFavorites);
+            articlesRecyclerView.setAdapter(articleAdapter);
         });
     }
 
@@ -160,18 +194,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-    private void showAllFavorites() {
-        firebaseFavorites.getAllFavoriteArticles();
-        if(articlesViewModel.getArticleListSize() > 0){
-            noLikedArticleTextView.setVisibility(View.GONE);
-        } else {
-            noLikedArticleTextView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void showUserThatNeedsToLogin() {
-        Toast.makeText(this, R.string.login_required, Toast.LENGTH_SHORT).show();
-    }
-
 }

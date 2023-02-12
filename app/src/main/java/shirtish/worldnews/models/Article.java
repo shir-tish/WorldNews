@@ -2,20 +2,11 @@ package shirtish.worldnews.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class Article {
-    private String author;
     private String title;
-    private String description;
     private String url;
-    private String source;
     private String image;
     private String category;
-    private String language;
-    private String country;
 
     @SerializedName("published_at")
     private String publishedAt;
@@ -23,24 +14,12 @@ public class Article {
     public Article() {
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public String getUrl() {
         return url;
-    }
-
-    public String getSource() {
-        return source;
     }
 
     public String getImage() {
@@ -51,24 +30,16 @@ public class Article {
         return category;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getPublishedAt() {
-        return publishedAt;
-    }
-
     public String getPublishedDate() {
-        String[] dateTime = this.publishedAt.split("T");
-        String date = dateTime[0];
+        if (this.publishedAt != null) {
+            String[] dateTime = this.publishedAt.split("T");
+            if (dateTime.length > 1) {
+                String date = dateTime[0];
+                String[] dateArray = date.split("-");
+                return dateArray[2] + "/" + dateArray[1] + "/" + dateArray[2] + " " + dateTime[1].substring(0, 5);
+            }
+        }
 
-        String[] dateArray = date.split("-");
-
-        return dateArray[2]+"/"+dateArray[1]+"/"+dateArray[2]+ " " + dateTime[1].substring(0, 5);
+        return "";
     }
 }

@@ -3,19 +3,13 @@ package shirtish.worldnews.firebase;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 import shirtish.worldnews.Constants;
-import shirtish.worldnews.R;
 
 public class FirebaseAuthenticate {
     private FirebaseAuth firebaseAuth;
@@ -37,7 +31,7 @@ public class FirebaseAuthenticate {
         return firebaseAuth.getCurrentUser() != null;
     }
 
-    private void setFirebaseAuthAndCheckIfUserIsSignedIn(){
+    private void setFirebaseAuthAndCheckIfUserIsSignedIn() {
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -45,7 +39,7 @@ public class FirebaseAuthenticate {
         return firebaseAuth;
     }
 
-    private void integratingGoogleSignInAndSetGoogleSignInClient(){
+    private void integratingGoogleSignInAndSetGoogleSignInClient() {
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Constants.DEFAULT_WEB_CLIENT_ID)
                 .requestEmail()
@@ -54,14 +48,14 @@ public class FirebaseAuthenticate {
         googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions);
     }
 
-    public void signIn(){
+    public void signIn() {
         if (googleSignInClient != null) {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             activity.startActivityForResult(signInIntent, Constants.REQUEST_SIGN_IN);
         }
     }
 
-    public void signOut(){
+    public void signOut() {
         firebaseAuth.signOut();
     }
 }
