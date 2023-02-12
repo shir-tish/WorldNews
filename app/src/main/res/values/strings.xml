@@ -2,7 +2,11 @@
     <string name="app_name" translatable="false">WorldNews</string>
     <string name="article_image">Article\'s image</string>
     <string name="favorites">Favorites</string>
+    <string name="back_to_list">"Back to list"</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="mark_as_favorite">mark as favorite</string>
     <string name="you_have_not_marked_any_article_as_liked_yet">You have not marked any article as liked yet!</string>
+    <string name="authentication_failed">Authentication failed.</string>
+    <string name="login_required">Login required!</string>
 </resources>

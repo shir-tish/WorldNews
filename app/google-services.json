@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "56036790765",
+    "project_id": "worldnews-377516",
+    "storage_bucket": "worldnews-377516.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56036790765:android:57f9a35013224ce96f57e4",
+        "android_client_info": {
+          "package_name": "shirtish.worldnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56036790765-ai0d4a9291d22ere4jrkip7ojj95v5gk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "shirtish.worldnews",
+            "certificate_hash": "22bd077a739eca81c1150243f52370c1d6642b44"
+          }
+        },
+        {
+          "client_id": "56036790765-uphiuoadu249tn2kqtlo8mol4n0vaa3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs2Me47V1Z2qHkiUj25qyhLh75cTCycn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56036790765-ob7a2tskgnbvufv0jq0jghef2f04o21c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

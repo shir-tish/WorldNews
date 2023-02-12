@@ -9,11 +9,13 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import shirtish.worldnews.Constants;
+import shirtish.worldnews.firebase.FirebaseFavorites;
 import shirtish.worldnews.models.Article;
 import shirtish.worldnews.retrofit.MediaStackApi;
 import shirtish.worldnews.retrofit.MediaStackApiUtil;
@@ -31,7 +33,18 @@ public class ArticlesViewModel extends ViewModel {
         return articlesList;
     }
 
-    private void loadArticles() {
+    public void setArticlesList(List<Article> articlesList) {
+        this.articlesList.setValue(articlesList);
+    }
+
+    public int getArticleListSize(){
+        if(articlesList.getValue() != null) {
+            return articlesList.getValue().size();
+        }
+        return 0;
+    }
+
+    public void loadArticles() {
         MediaStackApi mediaStackApi = MediaStackApiUtil.getMediaStackRetrofitApi();
 
         Call<ArrayList<Article>> call = mediaStackApi.getAllArticles(Constants.MEDIA_STACK_API_KEY);
@@ -70,4 +83,5 @@ public class ArticlesViewModel extends ViewModel {
             }
         });
     }
+
 }

@@ -2,7 +2,11 @@
 <resources>
     <string name="article_image">תמונת הכתבה</string>
     <string name="favorites">מועדפים</string>
-    <string name="login">Login</string>
-    <string name="mark_as_favorite">mark as favorite</string>
-    <string name="you_have_not_marked_any_article_as_liked_yet">You have not marked any article as liked yet!</string>
+    <string name="back_to_list">"חזרה לרשימה"</string>
+    <string name="login">התחברות</string>
+    <string name="logout">התנתקות</string>
+    <string name="mark_as_favorite">סימון כמועדף</string>
+    <string name="you_have_not_marked_any_article_as_liked_yet">טרם סומנה כתבה שאהבת!</string>
+    <string name="authentication_failed">ההזדהות נכשלה</string>
+    <string name="login_required">נדרשת התחברות!</string>
 </resources>

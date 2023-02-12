@@ -6,36 +6,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import shirtish.worldnews.R;
+import shirtish.worldnews.firebase.FirebaseFavorites;
 import shirtish.worldnews.models.Article;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
     private final Context context;
     private ArticleAdapterListener articleAdapterListener;
     private final List<Article> articleList;
+    private final FirebaseFavorites firebaseFavorites;
+
+    private static HashMap<String, String> favoritesArticlesKeysUrlsMap;
 
     public interface ArticleAdapterListener {
         void onArticleClicked(int position);
-
-        void onFavoriteBtnClicked(int position);
     }
 
     public void setArticleAdapterListener(ArticleAdapterListener articleAdapterListener) {
         this.articleAdapterListener = articleAdapterListener;
     }
 
-    public ArticleAdapter(Context context, List<Article> articleList) {
+    public ArticleAdapter(Context context, List<Article> articleList, FirebaseFavorites firebaseFavorites) {
         this.context = context;
         this.articleList = articleList;
+        this.firebaseFavorites = firebaseFavorites;
+        favoritesArticlesKeysUrlsMap = new HashMap<>();
     }
 
     @NonNull
@@ -61,27 +69,56 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             holder.noImageTextView.setVisibility(View.VISIBLE);
         }
 
-        checkIfFavoriteAndRemoveOrAddToList(holder.favoriteImageView);
+        boolean isFavorite = false;
+        for (Map.Entry<String, String> entry : favoritesArticlesKeysUrlsMap.entrySet()){
+            if (entry.getValue().equals(article.getUrl())){
+                holder.favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark));
+                isFavorite = true;
+            }
+        }
+
+        if(isFavorite){
+            holder.favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark_border));
+        }
 
         holder.itemView.setOnClickListener(view -> articleAdapterListener.onArticleClicked(holder.getAdapterPosition()));
 
-        holder.favoriteImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                articleAdapterListener.onFavoriteBtnClicked(holder.getAdapterPosition());
-
-                checkIfFavoriteAndRemoveOrAddToList(holder.favoriteImageView);
+        holder.favoriteImageView.setOnClickListener(view -> {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            if (firebaseAuth.getCurrentUser() != null) {
+                if (favoritesArticlesKeysUrlsMap.isEmpty()){
+                    turnToFavorite(article, holder.favoriteImageView);
+                }else{
+                    handleOnClickArticleIfMapIsNotEmpty(article, holder.favoriteImageView);
+                }
+            } else {
+                Toast.makeText(context, context.getString(R.string.login_required), Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 
-    private void checkIfFavoriteAndRemoveOrAddToList(ImageView favoriteImageView){
-        //TODO: if article is in favorite list then
-        /*if () {
-            favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark));
-        } else {
-            favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark_border));
-        }*/
+    private void handleOnClickArticleIfMapIsNotEmpty(Article article, ImageView imageView){
+        boolean isAlreadyFavorite = false;
+        for (Map.Entry<String, String> entry : favoritesArticlesKeysUrlsMap.entrySet()){
+            if (entry.getValue().equals(article.getUrl())){
+                isAlreadyFavorite = true;
+                imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark_border));
+                firebaseFavorites.deleteArticleFromFavorites(entry.getKey());
+                favoritesArticlesKeysUrlsMap.remove(entry.getKey());
+                break;
+            }
+        }
+
+        if(!isAlreadyFavorite){
+            turnToFavorite(article, imageView);
+        }
+    }
+
+    private void turnToFavorite(Article article, ImageView imageView){
+        imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mark));
+        String key = firebaseFavorites.addArticleToFavoritesListStorage(article);
+        favoritesArticlesKeysUrlsMap.put(key, article.getUrl());
     }
 
     @Override
